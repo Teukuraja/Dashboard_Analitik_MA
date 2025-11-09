@@ -48,9 +48,12 @@ Proyek ini menggunakan struktur *monolithic* sederhana. Baik backend maupun fron
 ```bash
 /Dashboard_Analitik_MA 
 ├── node_modules/ 
-├── src/ <-- Folder Frontend (React) │ 
-├── components/ │ 
-├── pages/ │
+├── src/ <-- Folder Frontend (React)
+│ 
+├── components/
+│ 
+├── pages/
+ │
 ├── App.jsx 
 │ └── main.jsx
 ├── .gitignore
