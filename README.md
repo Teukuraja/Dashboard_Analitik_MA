@@ -45,7 +45,8 @@ Proyek ini memiliki dua set fitur utama: sistem manajemen inti dan fitur analisi
 
 ## 📁 Struktur Proyek
 
-Proyek ini menggunakan struktur *monolithic* sederhana. Baik backend maupun frontend berada dalam satu folder utama dan satu `package.json`.
+##Proyek ini menggunakan struktur *monolithic* sederhana. Baik backend maupun frontend berada dalam satu folder utama dan satu `package.json`.
+```bash
 /Dashboard_Analitik_MA 
 ├── node_modules/ 
 ├── src/ <-- Folder Frontend (React) │ 
@@ -59,32 +60,39 @@ Proyek ini menggunakan struktur *monolithic* sederhana. Baik backend maupun fron
 ├── server.cjs <-- Server Backend (Node.js)
 └── README.md
 ---
-
+```
 ## 🚀 Instalasi & Menjalankan
 
 ### 1. Clone Repository
 ```bash
 git clone [https://github.com/Teukuraja/Dashboard_Analitik_MA.git](https://github.com/Teukuraja/Dashboard_Analitik_MA.git)
+```
 cd Dashboard_Analitik_MA
+
 2. Instalasi Dependensi
 Hanya perlu satu kali instalasi untuk backend dan frontend.
 
-Bash
+```Bash
 npm install
+```
 3. Jalankan Backend
 Buka terminal pertama:
 
-Bash
+
 # Jalankan server (menggunakan file server.cjs kita)
+```bash
 node server.cjs
+```
 Server akan berjalan di: http://localhost:8080
 
 4. Jalankan Frontend
 Buka terminal kedua:
 
-Bash
+
 # Jalankan frontend (Vite)
+```bash
 npm run dev
+```
 Aplikasi React akan berjalan di: http://localhost:5173
 
 Penting: Pastikan file src/api.js di frontend sudah mengarah ke baseURL backend yang benar (yaitu http://localhost:8080).
