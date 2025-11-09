@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* CSS kamu lainnya boleh ditaruh di bawah sini */
+/* Mengatur lebar card agar lebih fleksibel */
+.card-statistik {
+    width: 100%;
+    max-width: 350px;  /* Atur ukuran maksimal */
+  }
+  
+  /* Mengatur overflow dan memastikan teks tidak terpotong */
+  .overflow-wrap {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
