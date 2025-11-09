@@ -24,7 +24,7 @@ Proyek ini memiliki dua set fitur utama: sistem manajemen inti dan fitur analisi
 * **Upload Excel**: Fitur upload data inventory massal (.xlsx) menggunakan Multer & SheetJS.
 * **Form Cerdas**: Form Barang Masuk/Keluar dilengkapi *autocomplete* yang mengambil data (kode, nama, satuan) langsung dari database Inventory.
 
-### 2. Analisis Pola (Fitur Utama TA)
+### 2. Analisis Pola (Fitur Utama )
 
 * **Analisis Moving Average (MA)**: Fitur khusus untuk menganalisis pola historis barang masuk dan barang keluar.
 * **Perhitungan Dinamis**: User bisa memasukkan **Kode Barang**, **Unit**, dan **Periode (N)** untuk dianalisis.
