@@ -39,7 +39,6 @@ Proyek ini memiliki dua set fitur utama: sistem manajemen inti dan fitur analisi
 
 * **Backend**: Node.js (CJS), Express.js, SQLite3, Multer (Upload File), Moment.js
 * **Frontend**: React (Vite), Recharts (Grafik), React Hot Toast (Notifikasi), Lucide Icons
-* **Deployment**: (Contoh: Railway, Netlify, Vercel)
 
 ---
 
