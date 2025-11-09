@@ -79,8 +79,7 @@ npm install
 3. Jalankan Backend
 Buka terminal pertama:
 
-
-# Jalankan server (menggunakan file server.cjs kita)
+Jalankan server (menggunakan file server.cjs kita)
 ```bash
 node server.cjs
 ```
@@ -89,8 +88,7 @@ Server akan berjalan di: http://localhost:8080
 4. Jalankan Frontend
 Buka terminal kedua:
 
-
-# Jalankan frontend (Vite)
+Jalankan frontend (Vite)
 ```bash
 npm run dev
 ```
