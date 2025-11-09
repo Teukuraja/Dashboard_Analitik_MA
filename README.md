@@ -45,7 +45,7 @@ Proyek ini memiliki dua set fitur utama: sistem manajemen inti dan fitur analisi
 
 ## 📁 Struktur Proyek
 
-##Proyek ini menggunakan struktur *monolithic* sederhana. Baik backend maupun frontend berada dalam satu folder utama dan satu `package.json`.
+Proyek ini menggunakan struktur *monolithic* sederhana. Baik backend maupun frontend berada dalam satu folder utama dan satu `package.json`.
 ```bash
 /Dashboard_Analitik_MA 
 ├── node_modules/ 
@@ -59,16 +59,15 @@ Proyek ini memiliki dua set fitur utama: sistem manajemen inti dan fitur analisi
 ├── package.json <-- Mengatur SEMUA dependensi 
 ├── server.cjs <-- Server Backend (Node.js)
 └── README.md
----
+
 ```
 ## 🚀 Instalasi & Menjalankan
 
 ### 1. Clone Repository
 ```bash
 git clone [https://github.com/Teukuraja/Dashboard_Analitik_MA.git](https://github.com/Teukuraja/Dashboard_Analitik_MA.git)
-```
 cd Dashboard_Analitik_MA
-
+```
 2. Instalasi Dependensi
 Hanya perlu satu kali instalasi untuk backend dan frontend.
 
