@@ -77,6 +77,16 @@ export default function DashboardRingkasan() {
   // Menambahkan barang dengan stok kurang dari 3
   const lowStockItems = inventory.filter((item) => item.jumlah < 3);
 
+  // VVV INI FUNGSI BARU UNTUK NAVIGASI VVV
+  const handleLowStockClick = () => {
+    // Kita akan navigasi ke halaman Inventory
+    // dan mengirim "state" khusus untuk memberitahu
+    // halaman Inventory agar memfilter 'stok rendah'.
+    toast.success('Menampilkan item stok rendah...');
+    navigate('/inventory', { state: { filter: 'low_stock' } });
+  };
+  // ^^^ AKHIR FUNGSI BARU ^^^
+
   const formatDataPie = (data) => {
     const result = {};
     data.forEach((item) => {
@@ -126,7 +136,12 @@ export default function DashboardRingkasan() {
         {/* Menambahkan tampilan untuk stok yang sangat rendah */}
         <div className="md:col-span-1 self-start mt-10">
           {lowStockItems.length > 0 && (
-            <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 p-4 rounded-2xl shadow-md">
+            // VVV EDIT DIV INI: Tambahkan onClick & styling VVV
+            <div
+              className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 p-4 rounded-2xl shadow-md transition-transform hover:scale-105 cursor-pointer"
+              onClick={handleLowStockClick}
+            >
+            {/* ^^^ AKHIR PERUBAHAN ^^^ */}
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-sm">Stok Sangat Rendah</h3>
                 <p className="font-bold text-lg">{lowStockItems.length} item</p>

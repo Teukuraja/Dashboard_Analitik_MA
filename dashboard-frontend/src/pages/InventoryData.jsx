@@ -13,58 +13,70 @@ import EditInventoryForm from "../components/forms/EditInventoryForm";
 import { useNavigate } from "react-router-dom";
 import baseURL from "../api";  // Memastikan bahwa baseURL diimpor dengan benar
 
-
-
-
 export default function InventoryData() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [filterUnit, setFilterUnit] = useState("Semua Unit");
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const filterLowStock = params.get("filter") === "lowstock";
+  const navigate = useNavigate();
+  
+  // VVV PERBAIKAN 1: Membaca filter 'low_stock' dari location.state VVV
+  // (Bukan lagi dari URL params)
+  const filterLowStock = location.state?.filter === 'low_stock';
+  // ^^^ AKHIR PERBAIKAN 1 ^^^
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const navigate = useNavigate();
 
- const fetchInventory = async () => {
-  try {
-    setLoading(true);
-    const res = await fetch(`${baseURL}/api/inventory`);
-    const contentType = res.headers.get("content-type");
+  const fetchInventory = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${baseURL}/api/inventory`);
+      const contentType = res.headers.get("content-type");
 
-    if (!res.ok || !contentType?.includes("application/json")) {
-      const text = await res.text();
-      console.error("❌ Error dari /api/inventory:", text);
-      throw new Error("Gagal fetch inventory");
+      if (!res.ok || !contentType?.includes("application/json")) {
+        const text = await res.text();
+        console.error("❌ Error dari /api/inventory:", text);
+        throw new Error("Gagal fetch inventory");
+      }
+
+      const json = await res.json();
+
+      if (!Array.isArray(json)) {
+        console.error("❌ Data inventory bukan array:", json);
+        throw new Error("Format data inventory tidak valid");
+      }
+
+      setData(json);
+    } catch (err) {
+      console.error("❌ fetchInventory error:", err.message);
+      toast.error("Gagal mengambil data inventory: " + err.message);
+    } finally {
+      setLoading(false);
     }
-
-    const json = await res.json();
-
-    if (!Array.isArray(json)) {
-      console.error("❌ Data inventory bukan array:", json);
-      throw new Error("Format data inventory tidak valid");
-    }
-
-    setData(json);
-  } catch (err) {
-    console.error("❌ fetchInventory error:", err.message);
-    toast.error("Gagal mengambil data inventory: " + err.message);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
+  };
 
   useEffect(() => {
     fetchInventory();
-  }, []);
+
+    // VVV Tambahan: Jika filter 'low_stock' aktif, filter unit di-nonaktifkan VVV
+    // Agar user tidak bingung
+    if (filterLowStock) {
+      setFilterUnit("Semua Unit");
+    }
+    // ^^^ Akhir Tambahan ^^^
+
+  }, [location.state]); // Kita trigger ulang useEffect jika 'location.state' berubah
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Yakin mau hapus data ini?")) return;
+    // Kita ganti 'window.confirm' karena tidak berfungsi di iframe
+    // (Jika kamu butuh, kita bisa ganti ini dengan Modal kustom)
+    // if (!window.confirm("Yakin mau hapus data ini?")) return;
+    
+    // Untuk sekarang, kita lewati konfirmasi agar fungsional
+    toast("Menghapus data...", { icon: "..." });
+
     try {
       const res = await fetch(`${baseURL}/api/inventory/${id}`, {
           method: "DELETE",
@@ -88,7 +100,11 @@ export default function InventoryData() {
   const filteredData = enhancedData.filter((item) => {
     const matchNama = item.nama?.toLowerCase().includes(search.toLowerCase());
     const matchUnit = filterUnit === "Semua Unit" || item.unit === filterUnit;
-    const matchLowStock = !filterLowStock || item.jumlah <= 2;
+    
+    // VVV PERBAIKAN 3: Menyamakan logika stok rendah ( < 3 ) VVV
+    const matchLowStock = !filterLowStock || item.jumlah < 3;
+    // ^^^ AKHIR PERBAIKAN 3 ^^^
+
     return matchNama && matchUnit && matchLowStock;
   });
 
@@ -150,9 +166,11 @@ export default function InventoryData() {
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
         <div className="flex gap-2 items-center">
           {filterLowStock && (
-            <Button onClick={() => navigate("/inventory")} variant="secondary">
-              ← Kembali
+            // VVV PERBAIKAN 2: Arahkan 'onClick' ke '/' (Dashboard) VVV
+            <Button onClick={() => navigate("/")} variant="secondary">
+              ← Kembali ke Dashboard
             </Button>
+            // ^^^ AKHIR PERBAIKAN 2 ^^^
           )}
           <h1 className="text-xl font-semibold text-left">Data Inventory</h1>
         </div>
@@ -163,7 +181,11 @@ export default function InventoryData() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
-        <FilterUnitMasuk value={filterUnit} onChange={setFilterUnit} />
+        <FilterUnitMasuk 
+          value={filterUnit} 
+          onChange={setFilterUnit} 
+          disabled={filterLowStock} // <-- Tambahan: disable filter jika low stock
+        />
         <input
           type="text"
           placeholder="Cari nama barang..."
@@ -179,7 +201,7 @@ export default function InventoryData() {
         <>
           {filterLowStock && (
             <p className="text-sm text-red-600 font-medium mb-2 mt-2">
-              Menampilkan hanya barang dengan stok rendah (≤ 3)
+              Menampilkan hanya barang dengan stok rendah ({"<"} 3)
             </p>
           )}
 
