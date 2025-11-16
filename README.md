@@ -1,67 +1,97 @@
-# Tugas_KP
 
-Sistem **Dashboard Analitik** untuk mengelola data **barang masuk**, **barang keluar**, dan **inventory**.  
-Proyek ini terdiri dari dua bagian utama:
+# Dashboard Analitik Inventaris 
 
-1. **Backend** → Server API menggunakan Node.js (Express, SQLite3,Mutler).  
-2. **Frontend** → Dashboard Web menggunakan React + Vite.  
+Ini adalah sistem **Manajemen Inventaris** lengkap yang dibangun sebagai proyek Tugas Akhir (TA) / Kerja Praktik (KP). Sistem ini tidak hanya mengelola data **barang masuk**, **barang keluar**, dan **stok inventory**, tetapi juga dilengkapi dengan fitur **Analisis Pola Pemakaian** menggunakan metode **Moving Average (MA)**.
 
----
+Proyek ini terdiri dari dua bagian utama yang berjalan dari satu folder (struktur *monolithic*):
 
-## ✨ Fitur Utama
-- Login user (autentikasi backend).
-- CRUD data barang.
-- Sinkronisasi tabel: `barang_masuk`, `barang_keluar`, `inventory`.
-- Upload file dengan **Multer**.
-- Visualisasi data barang masuk/keluar dalam bentuk grafik (frontend).
-- Database ringan menggunakan **SQLite3**.
+1.  **Backend**: Server API menggunakan Node.js (Express) dengan database SQLite.
+2.  **Frontend**: Dashboard interaktif menggunakan React + Vite.
 
 ---
 
-## 🛠️ Teknologi
-- **Backend**: Node.js (CJS), Express.js, SQLite3, Multer  
-- **Frontend**: React, Vite  
-- **Deployment**: Railway 
+## ✨ Fitur Unggulan
+
+Proyek ini memiliki dua set fitur utama: sistem manajemen inti dan fitur analisis.
+
+### 1. Manajemen Inventaris (Sistem Inti)
+
+* **Autentikasi**: Halaman Login untuk mengamankan dashboard.
+* **CRUD Lengkap**: Manajemen data untuk **Barang Masuk**, **Barang Keluar**, dan **Stok Inventory**.
+* **Sinkronisasi Stok Otomatis**:
+    * Form **Barang Masuk** otomatis **menambah** stok di Inventory.
+    * Form **Barang Keluar** otomatis **mengurangi** stok di Inventory.
+* **Upload Excel**: Fitur upload data inventory massal (.xlsx) menggunakan Multer & SheetJS.
+* **Form Cerdas**: Form Barang Masuk/Keluar dilengkapi *autocomplete* yang mengambil data (kode, nama, satuan) langsung dari database Inventory.
+
+### 2. Analisis Pola (Fitur Utama )
+
+* **Analisis Moving Average (MA)**: Fitur khusus untuk menganalisis pola historis barang masuk dan barang keluar.
+* **Perhitungan Dinamis**: User bisa memasukkan **Kode Barang**, **Unit**, dan **Periode (N)** untuk dianalisis.
+* **Prediksi (Forecasting)**: Menampilkan prediksi pemakaian/pemasukan untuk periode berikutnya (`t+1`) berdasarkan nilai MA terakhir.
+* **Visualisasi Grafik**: Menampilkan perbandingan data **Aktual** vs. **Moving Average** dalam bentuk grafik garis (menggunakan Recharts).
+* **Dropdown Dinamis**: Form analisis otomatis mengambil daftar *unit* yang unik dari database, mencegah kesalahan input.
+* **Backend Non-blocking**: Menggunakan `UPPER()` di SQL untuk pencarian *case-insensitive* yang robust.
 
 ---
 
+## 🛠️ Teknologi yang Digunakan
+
+* **Backend**: Node.js (CJS), Express.js, SQLite3, Multer (Upload File), Moment.js
+* **Frontend**: React (Vite), Recharts (Grafik), React Hot Toast (Notifikasi), Lucide Icons
+
+---
+
+## 📁 Struktur Proyek
+
+Proyek ini menggunakan struktur *monolithic* sederhana. Baik backend maupun frontend berada dalam satu folder utama dan satu `package.json`.
+```bash
+/Dashboard_Analitik_MA 
+├── node_modules/ 
+├── src/ <-- Folder Frontend (React)
+│ 
+├── components/
+│ 
+├── pages/
+ │
+├── App.jsx 
+│ └── main.jsx
+├── .gitignore
+├── data.db <-- Database SQLite
+├── package.json <-- Mengatur SEMUA dependensi 
+├── server.cjs <-- Server Backend (Node.js)
+└── README.md
+
+```
 ## 🚀 Instalasi & Menjalankan
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/Teukuraja/Tugas_KP.git
-cd Tugas_KP
-
+git clone [https://github.com/Teukuraja/Dashboard_Analitik_MA.git](https://github.com/Teukuraja/Dashboard_Analitik_MA.git)
+cd Dashboard_Analitik_MA
 ```
+2. Instalasi Dependensi
+Hanya perlu satu kali instalasi untuk backend dan frontend.
 
-### 2. Jalankan Backend
-```bash
-cd dashboard-backend
+```Bash
 npm install
-
-# Jalankan server
-node server.js        # normal
-npm run dev           # jika menggunakan nodemon
 ```
+3. Jalankan Backend
+Buka terminal pertama:
 
-Server default berjalan di:
-
+Jalankan server (menggunakan file server.cjs kita)
 ```bash
-http://localhost:3000
-
+node server.cjs
 ```
-### 3.Jalankan Frontend
-Buka terminal baru:
-```bash
-cd dashboard-frontend
-npm install
+Server akan berjalan di: http://localhost:8080
 
-# Jalankan frontend
+4. Jalankan Frontend
+Buka terminal kedua:
+
+Jalankan frontend (Vite)
+```bash
 npm run dev
 ```
-Frontend default berjalan di:
-```bash
-http://localhost:5173
-```
-> Catatan: Pastikan baseURL di api.js mengarah ke backend (misalnya http://localhost:3000).
+Aplikasi React akan berjalan di: http://localhost:5173
 
+Penting: Pastikan file src/api.js di frontend sudah mengarah ke baseURL backend yang benar (yaitu http://localhost:8080).
